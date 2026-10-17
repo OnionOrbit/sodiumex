@@ -69,14 +69,24 @@ jobs:
           if [[ -f "$RUNNER_TEMP/gradle-build.log" ]]; then
             python - <<'PY'
           import os
+          import re
           from pathlib import Path
-          lines = Path(os.environ["RUNNER_TEMP"], "gradle-build.log").read_text(errors="replace").splitlines()[-50:]
-          text = "\n".join(lines)
+          all_lines = Path(os.environ["RUNNER_TEMP"], "gradle-build.log").read_text(errors="replace").splitlines()
+          keywords = re.compile(r"(?i)(FAILURE:|what went wrong|error:|\be:\s|could not|unresolved reference|caused by:|script compilation)")
+          selected = []
+          for index, line in enumerate(all_lines):
+              if keywords.search(line):
+                  selected.extend(all_lines[max(0, index - 2):min(len(all_lines), index + 3)])
+          # Keep unique lines in order, then include the log tail for context.
+          details = list(dict.fromkeys(selected))
+          if not details:
+              details = all_lines[-80:]
+          details = (details + all_lines[-30:])[-100:]
+          text = "\n".join(details)
           summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
           summary.write_text("## Gradle failure diagnostics\n\n```text\n" + text + "\n```\n")
           # Emit a bounded annotation so diagnostics remain visible even if Actions log downloads are unavailable.
-          message = "\n".join(lines[-20:])[:5000]
-          message = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+          message = text[-5000:].replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
           print(f"::error title=Gradle failure details::{message}")
           PY
           fi
