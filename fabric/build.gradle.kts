@@ -63,6 +63,20 @@ dependencies {
 
     implementation("net.fabricmc:fabric-loader:${BuildConfig.FABRIC_LOADER_VERSION}")
 
+    // Embed Lithium as a nested mod so players install one Sodiumex jar for both render and game-logic optimizations.
+    val lithium = "maven.modrinth:${BuildConfig.LITHIUM_MODRINTH_PROJECT_ID}:${BuildConfig.LITHIUM_FABRIC_VERSION_ID}"
+    modImplementation(lithium)
+    include(lithium)
+
+    // Memory deduplication and immediate-mode draw batching complement Sodium's chunk renderer.
+    val ferriteCore = "maven.modrinth:${BuildConfig.FERRITECORE_MODRINTH_PROJECT_ID}:${BuildConfig.FERRITECORE_FABRIC_VERSION_ID}"
+    modImplementation(ferriteCore)
+    include(ferriteCore)
+
+    val immediatelyFast = "maven.modrinth:${BuildConfig.IMMEDIATELYFAST_MODRINTH_PROJECT_ID}:${BuildConfig.IMMEDIATELYFAST_FABRIC_VERSION_ID}"
+    modImplementation(immediatelyFast)
+    include(immediatelyFast)
+
     fun addEmbeddedFabricModule(name: String) {
         val module = fabricApi.module(name, BuildConfig.FABRIC_API_VERSION)
         implementation(module)
@@ -108,6 +122,9 @@ tasks {
         from(configurationApiModJava)
         if (BuildConfig.SUPPORT_FRAPI) {
             from(configurationFrapiModJava)
+        }
+        from(rootDir.resolve("thirdparty")) {
+            into("META-INF/thirdparty")
         }
     }
 

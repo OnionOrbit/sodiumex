@@ -52,6 +52,11 @@ public class SodiumClientMod {
         return OPTIONS;
     }
 
+    public static boolean disableAutomaticFpsThrottling() {
+        SodiumOptions options = OPTIONS;
+        return options != null && options.performance.disableAutomaticFpsThrottling;
+    }
+
     public static Logger logger() {
         if (LOGGER == null) {
             throw new IllegalStateException("Logger not yet available");

@@ -2,6 +2,7 @@ package net.caffeinemc.mods.sodium.mixin.core;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.platform.FramerateLimitTracker;
 import net.caffeinemc.mods.sodium.client.SodiumClientMod;
 import net.caffeinemc.mods.sodium.client.checks.ResourcePackScanner;
 import net.caffeinemc.mods.sodium.client.compatibility.environment.OsUtils;
@@ -30,6 +31,19 @@ public class MinecraftMixin {
     @Shadow
     @Final
     private ReloadableResourceManager resourceManager;
+
+    @WrapOperation(
+            method = "renderFrame",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcom/mojang/blaze3d/platform/FramerateLimitTracker;getFramerateLimit()I"))
+    private int sodium$disableAutomaticFpsThrottling(FramerateLimitTracker tracker, Operation<Integer> original) {
+        if (!SodiumClientMod.disableAutomaticFpsThrottling()) {
+            return original.call(tracker);
+        }
+
+        return Minecraft.getInstance().options.framerateLimit().get();
+    }
 
     /**
      * Check for problematic core shader resource packs after the initial game launch.

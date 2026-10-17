@@ -1024,7 +1024,14 @@ public class RenderSectionManager {
     }
 
     private float getRenderDistance() {
-        return this.renderDistance * 16.0f;
+        int renderDistance = this.renderDistance;
+        int renderDistanceLimit = SodiumClientMod.options().performance.renderDistanceLimit;
+
+        if (renderDistanceLimit > 0) {
+            renderDistance = Math.min(renderDistance, renderDistanceLimit);
+        }
+
+        return renderDistance * 16.0f;
     }
 
     private void connectNeighborNodes(RenderSection render) {

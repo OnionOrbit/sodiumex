@@ -67,12 +67,15 @@ dependencies {
     configurationCommonServiceResources(project(path = ":common", configuration = "commonBootResources"))
     if (BuildConfig.SUPPORT_FRAPI) configurationFrapiModResources(project(path = ":frapi", configuration = "frapiMainResources"))
 
-    fun addEmbeddedFabricModule(dependency: String) {
+    fun addEmbeddedDependency(dependency: String) {
         dependencies.implementation(dependency)
         dependencies.jarJar(dependency)
     }
 
-    //addEmbeddedFabricModule("org.sinytra.forgified-fabric-api:fabric-block-view-api-v2:1.0.10+9afaaf8c19")
+    // Jar-in-jar keeps the complementary upstream optimization mods in one installable Sodiumex file.
+    addEmbeddedDependency("maven.modrinth:${BuildConfig.LITHIUM_MODRINTH_PROJECT_ID}:${BuildConfig.LITHIUM_NEOFORGE_VERSION_ID}")
+    addEmbeddedDependency("maven.modrinth:${BuildConfig.FERRITECORE_MODRINTH_PROJECT_ID}:${BuildConfig.FERRITECORE_NEOFORGE_VERSION_ID}")
+    addEmbeddedDependency("maven.modrinth:${BuildConfig.IMMEDIATELYFAST_MODRINTH_PROJECT_ID}:${BuildConfig.IMMEDIATELYFAST_NEOFORGE_VERSION_ID}")
 
     jarJar(project(":neoforge", "mod"))
 }
@@ -89,6 +92,9 @@ val modJar = tasks.register<Jar>("modJar") {
     from(sourceSets["mod"].output)
 
     from(rootDir.resolve("LICENSE.md"))
+    from(rootDir.resolve("thirdparty")) {
+        into("META-INF/thirdparty")
+    }
 
     filesMatching(listOf("META-INF/neoforge.mods.toml")) {
         expand(mapOf("version" to inputs.properties["version"]))

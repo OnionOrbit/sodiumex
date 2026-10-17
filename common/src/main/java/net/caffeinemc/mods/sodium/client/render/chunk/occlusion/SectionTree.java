@@ -72,6 +72,12 @@ public class SectionTree extends AbstractSectionVisitor {
         int maxY = SectionPos.posToSectionCoord(y2 + 0.5D);
         int maxZ = SectionPos.posToSectionCoord(z2 + 0.5D);
 
+        // Most mobs and players occupy only one 16x16x16 section. In crowded scenes this
+        // avoids running two nested section scans for every entity visibility query.
+        if (minX == maxX && minY == maxY && minZ == maxZ) {
+            return this.tree.isSectionPresent(minX, minY, minZ) || notInTreePredicate.isEmpty(minX, minY, minZ);
+        }
+
         // check if any of the sections in the box are present, and then check the predicate as it's likely more expensive than fetching from the bitmask
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {

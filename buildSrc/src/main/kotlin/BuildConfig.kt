@@ -3,8 +3,17 @@ import org.gradle.api.Project
 object BuildConfig {
     val MINECRAFT_VERSION: String = "26.3"
     val NEOFORGE_VERSION: String = "26.3.0.65-beta"
-    val FABRIC_LOADER_VERSION: String = "0.19.3"
+    val FABRIC_LOADER_VERSION: String = "0.19.5"
     val FABRIC_API_VERSION: String = "0.160.5+26.3"
+    val LITHIUM_MODRINTH_PROJECT_ID: String = "gvQqBUqZ"
+    val LITHIUM_FABRIC_VERSION_ID: String = "xS0Q8LSi"
+    val LITHIUM_NEOFORGE_VERSION_ID: String = "1rb9wI5K"
+    val FERRITECORE_MODRINTH_PROJECT_ID: String = "uXXizFIs"
+    val FERRITECORE_FABRIC_VERSION_ID: String = "d5ddUdiB"
+    val FERRITECORE_NEOFORGE_VERSION_ID: String = "LtVvw4uS"
+    val IMMEDIATELYFAST_MODRINTH_PROJECT_ID: String = "5ZwdcRci"
+    val IMMEDIATELYFAST_FABRIC_VERSION_ID: String = "3MP9UR23"
+    val IMMEDIATELYFAST_NEOFORGE_VERSION_ID: String = "4SovUFpn"
     val SUPPORT_FRAPI : Boolean = true
 
     // https://semver.org/

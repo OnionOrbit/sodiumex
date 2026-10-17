@@ -33,7 +33,13 @@ For a complete listing of available nightly builds, please see [the wiki page](h
 Since the release of Sodium 0.6.0, both the _Fabric_ and _NeoForge_ mod loaders are supported. We generally recommend
 that new users prefer to use the _Fabric_ mod loader, since it is more lightweight and stable (for the time being.)
 
-For more information about downloading and installing the mod, please refer to our [Installation Guide](https://github.com/CaffeineMC/sodium/wiki/Installation).
+For more information about downloading and installing the mod, please refer to the [Sodium installation guide](https://github.com/CaffeineMC/sodium/wiki/Installation).
+
+#### Bundled game-logic optimizations
+
+The Fabric and NeoForge builds for Minecraft 26.3 bundle Lithium 0.26.2, FerriteCore 9.0.0, and ImmediatelyFast 1.17.1 as independent nested mods. Install the Sodiumex jar only; do not add separate copies of those three mods. Together they target game-logic overhead, memory use, and immediate-mode GUI/entity/text rendering, complementing Sodium's chunk renderer. Upstream jars remain separate, unmodified nested mods with their own licenses; `thirdparty/NOTICE.txt`, license texts, and corresponding source archives are kept in the repository and packaged under `META-INF/thirdparty/` in the output jar. These are present only in the client install: they optimize local/integrated play but cannot improve a remote dedicated server unless its operator installs compatible server-side mods (Lithium and FerriteCore).
+
+Sodiumex also includes original client-side controls for a hard render-distance ceiling and for bypassing Minecraft's automatic background-FPS throttling, plus faster stale-mesh cancellation and a section-local block-state lookup path in the chunk meshing hot loop. See [the optimization notes](docs/OPTIMIZATION_STACK.md) for the mechanisms, limits, and excluded mods.
 
 ### 🙇 Getting Help
 
@@ -88,12 +94,9 @@ with `./gradlew.bat` (Windows) or `./gradlew` (macOS and Linux).
 
 ### Build Requirements
 
-- OpenJDK 21
-    - We recommend using the [Eclipse Temurin](https://adoptium.net/) distribution as it's regularly tested by our developers and known
-      to be of high quality.
-- Gradle 8.10.x
-    - Typically, newer versions of Gradle will work without issues, but the build script is only tested against the
-      version used by the [wrapper script](/gradle/wrapper/gradle-wrapper.properties).
+- OpenJDK 25
+    - Use the version required by the Minecraft 26.3 toolchain; we recommend [Eclipse Temurin](https://adoptium.net/).
+- Gradle 9.7.1 (provided by the wrapper in `gradle/wrapper/gradle-wrapper.properties`).
 
 ## 📜 License
 

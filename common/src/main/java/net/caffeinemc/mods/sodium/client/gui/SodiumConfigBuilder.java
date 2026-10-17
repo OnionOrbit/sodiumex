@@ -462,6 +462,20 @@ public class SodiumConfigBuilder implements ConfigEntryPoint {
                                 .setFlags(OptionFlag.REQUIRES_RENDERER_RELOAD)
                 )
                 .addOption(
+                        builder.createIntegerOption(Identifier.parse("sodium:performance.render_distance_limit"))
+                                .setStorageHandler(this.sodiumStorage)
+                                .setName(Component.translatable("sodium.options.render_distance_limit.name"))
+                                .setValueFormatter(ControlValueFormatterImpls.quantityOrDisabled(
+                                        value -> Component.translatable("options.chunks", value),
+                                        Component.translatable("sodium.options.default")))
+                                .setTooltip(Component.translatable("sodium.options.render_distance_limit.tooltip"))
+                                .setRange(0, 32, 1)
+                                .setDefaultValue(DEFAULTS.performance.renderDistanceLimit)
+                                .setBinding(value -> this.sodiumOpts.performance.renderDistanceLimit = value, () -> this.sodiumOpts.performance.renderDistanceLimit)
+                                .setImpact(OptionImpact.HIGH)
+                                .setFlags(OptionFlag.REQUIRES_RENDERER_UPDATE)
+                )
+                .addOption(
                         builder.createEnumOption(Identifier.parse("sodium:performance.always_defer_chunk_updates"), DeferMode.class)
                                 .setStorageHandler(this.sodiumStorage)
                                 .setName(Component.translatable("sodium.options.defer_chunk_updates.name"))
@@ -517,7 +531,19 @@ public class SodiumConfigBuilder implements ConfigEntryPoint {
                         this.buildNoErrorContextOption(builder)
                 )
                 .addOption(
+                        builder.createBooleanOption(Identifier.parse("sodium:performance.disable_automatic_fps_throttling"))
+                                .setStorageHandler(this.sodiumStorage)
+                                .setName(Component.translatable("sodium.options.disable_automatic_fps_throttling.name"))
+                                .setTooltip(Component.translatable("sodium.options.disable_automatic_fps_throttling.tooltip"))
+                                .setDefaultValue(DEFAULTS.performance.disableAutomaticFpsThrottling)
+                                .setBinding(value -> this.sodiumOpts.performance.disableAutomaticFpsThrottling = value, () -> this.sodiumOpts.performance.disableAutomaticFpsThrottling)
+                                .setImpact(OptionImpact.MEDIUM)
+                )
+                .addOption(
                         vanilla.createEnumOption(Identifier.parse("sodium:performance.inactivity_fps_limit"), InactivityFpsLimit.class, this.vanillaOpts.inactivityFpsLimit())
+                                .setEnabledProvider(
+                                        state -> !state.readBooleanOption(Identifier.parse("sodium:performance.disable_automatic_fps_throttling")),
+                                        Identifier.parse("sodium:performance.disable_automatic_fps_throttling"))
                 )
         );
 

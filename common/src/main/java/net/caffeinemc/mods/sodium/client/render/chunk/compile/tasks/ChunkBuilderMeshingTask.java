@@ -81,6 +81,7 @@ public class ChunkBuilderMeshingTask extends ChunkBuilderTask<ChunkBuildOutput> 
         cache.init(this.renderContext);
 
         LevelSlice slice = cache.getWorldSlice();
+        BlockState[] sectionBlockStates = slice.getOriginBlockStates();
 
         int minX = this.section.getOriginX();
         int minY = this.section.getOriginY();
@@ -106,23 +107,27 @@ public class ChunkBuilderMeshingTask extends ChunkBuilderTask<ChunkBuildOutput> 
 
         profiler.push("render blocks");
         try {
-            for (int y = minY; y < maxY; y++) {
-                if (cancellationToken.isCancelled()) {
-                    return null;
-                }
+            for (int localY = 0; localY < 16; localY++) {
+                int y = minY + localY;
+                for (int localZ = 0; localZ < 16; localZ++) {
+                    // Check per row rather than only once per Y slice so stale work is
+                    // abandoned quickly when the camera moves or a section is invalidated.
+                    if (cancellationToken.isCancelled()) {
+                        profiler.pop();
+                        return null;
+                    }
 
-                for (int z = minZ; z < maxZ; z++) {
-                    for (int x = minX; x < maxX; x++) {
-                        BlockState blockState = slice.getBlockState(x, y, z);
+                    int z = minZ + localZ;
+                    int rowIndex = (localY << 8) | (localZ << 4);
+                    for (int localX = 0; localX < 16; localX++) {
+                        int x = minX + localX;
+                        BlockState blockState = sectionBlockStates[rowIndex + localX];
 
                         if (blockState.isAir() && !blockState.hasBlockEntity()) {
                             continue;
                         }
 
                         blockPos.set(x, y, z);
-                        int localX = x & 15;
-                        int localY = y & 15;
-                        int localZ = z & 15;
                         modelOffset.set(localX, localY, localZ);
 
                         if (blockState.getRenderShape() == RenderShape.MODEL) {

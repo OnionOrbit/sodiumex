@@ -1,10 +1,9 @@
 Third-Party License Notice
 =======================================
 
-This project contains source code based upon, or includes source code from, the following third-party
-projects.
-
-The complete text for each software license can be found in the directory "thirdparty/licenses".
+This project incorporates third-party source and distributes the independent nested mods listed below.
+The corresponding source archives, where applicable, and complete license texts are included in `thirdparty/`
+and `thirdparty/licenses/`.
 
 * Fabric API libraries
   * Copyright (c) 2016 FabricMC
@@ -27,3 +26,36 @@ The complete text for each software license can be found in the directory "third
     * https://github.com/IrisShaders/Iris/tree/41095ac23ea0add664afd1b85c414d1f1ed94066/src/main/java/net/coderbot/iris/mixin/bettermipmaps
   * Files:
     * common/src/main/java/net/caffeinemc/mods/sodium/mixin/features/textures/mipmaps
+
+* Lithium (bundled as an independent nested mod; source is not merged into Sodiumex)
+  * Copyright: as listed in the upstream Lithium source
+  * Version: 0.26.2 for Minecraft 26.3
+  * License: GNU Lesser General Public License v3.0 only (SPDX: LGPL-3.0-only)
+  * License texts: `thirdparty/licenses/LICENSE-LGPL-3.0.txt` and `thirdparty/licenses/LICENSE-GPL-3.0.txt`
+  * Original source and corresponding source archive:
+    * https://github.com/CaffeineMC/lithium/tree/mc26.3-0.26.2
+    * `thirdparty/lithium-mc26.3-0.26.2-source.tar.gz`
+  * Source archive SHA-256: `046d190ed09d1430a48db2bd62250d82f2c44ef9a909b604ad75dca104be052c`
+  * The upstream Lithium jar is nested unchanged in the Fabric and NeoForge Sodiumex jars; its own license/metadata remain with that nested mod. The source archive is included to preserve the corresponding source for this exact version.
+
+
+* FerriteCore (bundled as an independent nested mod; source is not merged into Sodiumex)
+  * Copyright: as listed in the upstream FerriteCore source
+  * Version: 9.0.0 for Minecraft 26.3
+  * License: MIT (SPDX: MIT); see `thirdparty/licenses/LICENSE-FERRITECORE-MIT.txt`
+  * Original source and corresponding source archive:
+    * https://github.com/malte0811/FerriteCore/tree/build-9.0.0
+    * `thirdparty/ferritecore-9.0.0-source.tar.gz`
+  * Source archive SHA-256: `65e8725259d27afe54658d9fae3e44307fd8d95345ef2e57e81a4740fcbb3f22`
+  * The upstream Fabric and NeoForge jars are nested unchanged; each jar retains its upstream metadata.
+
+* ImmediatelyFast (bundled as an independent nested mod; source is not merged into Sodiumex)
+  * Copyright: as listed in the upstream ImmediatelyFast source
+  * Version: 1.17.1 for Minecraft 26.3
+  * License: GNU Lesser General Public License v3.0 or later (SPDX: LGPL-3.0-or-later); see
+    `thirdparty/licenses/LICENSE-LGPL-3.0-or-later.txt` and `thirdparty/licenses/LICENSE-GPL-3.0.txt`
+  * Original source and corresponding source archive:
+    * https://github.com/RaphiMC/ImmediatelyFast/tree/v1.17.1
+    * `thirdparty/immediatelyfast-1.17.1-source.tar.gz`
+  * Source archive SHA-256: `1f432574b3e02f9bfb6f87b0e6a9463a1a5819d683a66e8c077c2043bfc64a09`
+  * The upstream Fabric and NeoForge jars are nested unchanged; each jar retains its upstream metadata.

@@ -28,6 +28,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -62,6 +63,7 @@ public final class LevelSlice implements BlockAndTintGetter {
 
     // The size of the (Local Section -> Resource) arrays.
     private static final int SECTION_ARRAY_SIZE = SECTION_ARRAY_LENGTH * SECTION_ARRAY_LENGTH * SECTION_ARRAY_LENGTH;
+    private static final int CENTER_SECTION_INDEX = getLocalSectionIndex(NEIGHBOR_CHUNK_RADIUS, NEIGHBOR_CHUNK_RADIUS, NEIGHBOR_CHUNK_RADIUS);
 
     // The number of bits needed for each local X/Y/Z coordinate.
     private static final int LOCAL_XYZ_BITS = 4;
@@ -265,6 +267,16 @@ public final class LevelSlice implements BlockAndTintGetter {
 
         return this.blockArrays[getLocalSectionIndex(relBlockX >> 4, relBlockY >> 4, relBlockZ >> 4)]
                 [getLocalBlockIndex(relBlockX & 15, relBlockY & 15, relBlockZ & 15)];
+    }
+
+    /**
+     * Returns the center section's pooled block-state array for the chunk meshing hot loop.
+     * The caller must treat this array as read-only and must not retain it beyond the current
+     * build task; the slice and its arrays are reused after the task completes.
+     */
+    @ApiStatus.Internal
+    public BlockState[] getOriginBlockStates() {
+        return this.blockArrays[CENTER_SECTION_INDEX];
     }
 
     @Override

@@ -44,6 +44,7 @@ public class SodiumOptions {
 
     public static class PerformanceSettings {
         public int chunkBuilderThreads = 0;
+        public int renderDistanceLimit = 0;
         public DeferMode chunkBuildDeferMode = DeferMode.ALWAYS;
 
         public boolean animateOnlyVisibleTextures = true;
@@ -51,6 +52,7 @@ public class SodiumOptions {
         public boolean useFogOcclusion = true;
         public boolean useBlockFaceCulling = true;
         public boolean useNoErrorGLContext = true;
+        public boolean disableAutomaticFpsThrottling = false;
 
         public QuadSplittingMode quadSplittingMode = QuadSplittingMode.SAFE;
     }
