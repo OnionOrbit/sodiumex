@@ -65,16 +65,16 @@ dependencies {
 
     // Embed Lithium as a nested mod so players install one Sodiumex jar for both render and game-logic optimizations.
     val lithium = "maven.modrinth:${BuildConfig.LITHIUM_MODRINTH_PROJECT_ID}:${BuildConfig.LITHIUM_FABRIC_VERSION_ID}"
-    modImplementation(lithium)
+    add("modImplementation", lithium)
     include(lithium)
 
     // Memory deduplication and immediate-mode draw batching complement Sodium's chunk renderer.
     val ferriteCore = "maven.modrinth:${BuildConfig.FERRITECORE_MODRINTH_PROJECT_ID}:${BuildConfig.FERRITECORE_FABRIC_VERSION_ID}"
-    modImplementation(ferriteCore)
+    add("modImplementation", ferriteCore)
     include(ferriteCore)
 
     val immediatelyFast = "maven.modrinth:${BuildConfig.IMMEDIATELYFAST_MODRINTH_PROJECT_ID}:${BuildConfig.IMMEDIATELYFAST_FABRIC_VERSION_ID}"
-    modImplementation(immediatelyFast)
+    add("modImplementation", immediatelyFast)
     include(immediatelyFast)
 
     fun addEmbeddedFabricModule(name: String) {
